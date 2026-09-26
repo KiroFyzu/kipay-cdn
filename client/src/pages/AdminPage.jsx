@@ -41,40 +41,43 @@ export default function AdminPage() {
 
   return (
     <div className="admin-page">
-      <h1>Admin — Users</h1>
+      <h1><i className="fa-solid fa-users-gear" aria-hidden="true" /> Admin — Users</h1>
       {error && <p className="error">{error}</p>}
-      <table className="file-table">
-        <thead>
-          <tr>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Usage</th>
-            <th>Quota (GB)</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((u) => (
-            <tr key={u.id}>
-              <td>{u.email}</td>
-              <td>{u.role}</td>
-              <td>{formatBytes(u.storage_used_bytes)}</td>
-              <td>
-                <input
-                  type="number"
-                  step="0.1"
-                  min="0"
-                  defaultValue={(u.storage_quota_bytes / (1024 * 1024 * 1024)).toFixed(2)}
-                  onBlur={(e) => handleQuotaChange(u, e.target.value)}
-                />
-              </td>
-              <td className="row-actions">
-                <button className="danger" onClick={() => handleDelete(u)}>Delete</button>
-              </td>
+      <div className="table-scroll">
+        <table className="file-table">
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Usage</th>
+              <th>Quota (GB)</th>
+              <th><span className="sr-only">Actions</span></th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {users.map((u) => (
+              <tr key={u.id}>
+                <td>{u.email}</td>
+                <td>{u.role}</td>
+                <td>{formatBytes(u.storage_used_bytes)}</td>
+                <td>
+                  <input
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    defaultValue={(u.storage_quota_bytes / (1024 * 1024 * 1024)).toFixed(2)}
+                    onBlur={(e) => handleQuotaChange(u, e.target.value)}
+                    aria-label={`Storage quota in GB for ${u.email}`}
+                  />
+                </td>
+                <td className="row-actions">
+                  <button className="danger" onClick={() => handleDelete(u)}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

@@ -50,19 +50,25 @@ export default function RecentPage() {
   return (
     <div className="page-with-toolbar">
       <div className="page-header-row">
-        <h1><i className="fa-solid fa-clock-rotate-left" /> Recent</h1>
-        <div className="toolbar-view-toggle">
-          <button className={view === 'list' ? 'active' : ''} onClick={() => setView('list')}>
-            <i className="fa-solid fa-list" />
+        <h1><i className="fa-solid fa-clock-rotate-left" aria-hidden="true" /> Recent</h1>
+        <div className="toolbar-view-toggle" role="group" aria-label="Change view">
+          <button className={view === 'list' ? 'active' : ''} aria-label="List view" aria-pressed={view === 'list'} onClick={() => setView('list')}>
+            <i className="fa-solid fa-list" aria-hidden="true" />
           </button>
-          <button className={view === 'grid' ? 'active' : ''} onClick={() => setView('grid')}>
-            <i className="fa-solid fa-table-cells-large" />
+          <button className={view === 'grid' ? 'active' : ''} aria-label="Grid view" aria-pressed={view === 'grid'} onClick={() => setView('grid')}>
+            <i className="fa-solid fa-table-cells-large" aria-hidden="true" />
           </button>
         </div>
       </div>
       <p className="page-subtitle">Your most recently uploaded or viewed files, across all folders.</p>
 
-      {loading && <p>Loading…</p>}
+      {loading && (
+        <div className="skeleton-stack" aria-busy="true" aria-label="Loading recent files">
+          <div className="skeleton skeleton-row" />
+          <div className="skeleton skeleton-row" />
+          <div className="skeleton skeleton-row" />
+        </div>
+      )}
       {!loading && (
         <Component
           files={files}

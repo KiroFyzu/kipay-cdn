@@ -25,13 +25,13 @@ export default function AdminActivityPage() {
 
   return (
     <div className="admin-page">
-      <h1><i className="fa-solid fa-clipboard-list" /> Activity Log</h1>
+      <h1><i className="fa-solid fa-clipboard-list" aria-hidden="true" /> Activity Log</h1>
       <p className="page-subtitle">Audit trail of uploads, deletes, shares, logins, and account changes across all users.</p>
 
       <section className="card">
         <ActivityFeed entries={entries} showUser />
         {hasMore && (
-          <button className="secondary" style={{ marginTop: 12 }} onClick={() => loadPage(cursor)} disabled={loading}>
+          <button className="secondary settings-action" onClick={() => loadPage(cursor)} disabled={loading}>
             {loading ? 'Loading…' : 'Load more'}
           </button>
         )}

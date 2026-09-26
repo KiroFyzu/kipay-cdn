@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { authApi } from '../api/client';
+import { useEscapeToClose } from '../utils/useEscapeToClose';
 
 export default function DisableTwoFactorModal({ onClose, onDisabled }) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  useEscapeToClose(onClose, !submitting);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -23,8 +25,8 @@ export default function DisableTwoFactorModal({ onClose, onDisabled }) {
 
   return (
     <div className="modal-overlay" onClick={submitting ? undefined : onClose}>
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <h2>Disable Two-Factor Authentication</h2>
+      <div className="modal" role="dialog" aria-modal="true" aria-labelledby="totp-disable-title" onClick={(e) => e.stopPropagation()}>
+        <h2 id="totp-disable-title">Disable Two-Factor Authentication</h2>
         <p>Enter your current password to confirm disabling 2FA on this account.</p>
         <form onSubmit={handleSubmit} className="settings-form">
           <input

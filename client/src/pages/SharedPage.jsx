@@ -23,38 +23,49 @@ export default function SharedPage() {
 
   return (
     <div className="shared-page">
-      <h1>Public Links</h1>
+      <h1><i className="fa-solid fa-globe" aria-hidden="true" /> Public Links</h1>
       <p className="page-subtitle">Files you've made publicly accessible via a direct CDN link.</p>
 
-      {loading && <p>Loading…</p>}
+      {loading && (
+        <div className="skeleton-stack" aria-busy="true" aria-label="Loading public links">
+          <div className="skeleton skeleton-row" />
+          <div className="skeleton skeleton-row" />
+          <div className="skeleton skeleton-row" />
+        </div>
+      )}
       {!loading && files.length === 0 && (
-        <p className="empty-state">You haven't shared any files publicly yet.</p>
+        <div className="empty-state">
+          <i className="fa-solid fa-globe empty-state-icon" aria-hidden="true" />
+          <p>You haven't shared any files publicly yet.</p>
+        </div>
       )}
       {!loading && files.length > 0 && (
-        <table className="file-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Size</th>
-              <th>Shared on</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {files.map((f) => (
-              <tr key={f.id}>
-                <td>{f.original_name}</td>
-                <td>{formatBytes(f.size_bytes)}</td>
-                <td>{new Date(f.created_at).toLocaleString()}</td>
-                <td className="row-actions">
-                  <button className="link-button" onClick={() => setShareFile(f)}>
-                    View link
-                  </button>
-                </td>
+        <div className="table-scroll">
+          <table className="file-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Size</th>
+                <th>Shared on</th>
+                <th><span className="sr-only">Actions</span></th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {files.map((f) => (
+                <tr key={f.id}>
+                  <td>{f.original_name}</td>
+                  <td>{formatBytes(f.size_bytes)}</td>
+                  <td>{new Date(f.created_at).toLocaleString()}</td>
+                  <td className="row-actions">
+                    <button className="link-button" onClick={() => setShareFile(f)}>
+                      View link
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
 
       {shareFile && <ShareLinkModal file={shareFile} onClose={() => setShareFile(null)} />}

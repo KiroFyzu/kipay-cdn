@@ -94,12 +94,12 @@ export default function SettingsPage() {
               {user?.totp_enabled ? 'Aktif' : 'Tidak Aktif'}
             </p>
             {!user?.totp_enabled && (
-              <button className="primary" style={{ marginTop: 8 }} onClick={() => setShow2FASetup(true)}>
-                <i className="fa-solid fa-shield-halved" /> Aktifkan 2FA
+              <button className="primary settings-action" onClick={() => setShow2FASetup(true)}>
+                <i className="fa-solid fa-shield-halved" aria-hidden="true" /> Aktifkan 2FA
               </button>
             )}
             {user?.totp_enabled && (
-              <button className="danger" style={{ marginTop: 8 }} onClick={() => setShow2FADisable(true)}>
+              <button className="danger settings-action" onClick={() => setShow2FADisable(true)}>
                 Nonaktifkan 2FA
               </button>
             )}

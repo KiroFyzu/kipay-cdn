@@ -40,46 +40,59 @@ export default function TrashPage() {
 
   return (
     <div className="page-with-toolbar">
-      <h1><i className="fa-solid fa-trash" /> Trash</h1>
+      <h1><i className="fa-solid fa-trash" aria-hidden="true" /> Trash</h1>
       <p className="page-subtitle">
         Files here are automatically deleted forever after {RETENTION_DAYS} days. They still count
         against your storage quota until then.
       </p>
 
-      {loading && <p>Loading…</p>}
-      {!loading && files.length === 0 && <p className="empty-state">Trash is empty.</p>}
+      {loading && (
+        <div className="skeleton-stack" aria-busy="true" aria-label="Loading trash">
+          <div className="skeleton skeleton-row" />
+          <div className="skeleton skeleton-row" />
+          <div className="skeleton skeleton-row" />
+        </div>
+      )}
+      {!loading && files.length === 0 && (
+        <div className="empty-state">
+          <i className="fa-solid fa-trash empty-state-icon" aria-hidden="true" />
+          <p>Trash is empty.</p>
+        </div>
+      )}
       {!loading && files.length > 0 && (
-        <table className="file-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Size</th>
-              <th>Deleted</th>
-              <th>Auto-delete in</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {files.map((file) => (
-              <tr key={file.id}>
-                <td>
-                  <i className={iconClassFor(file.mime_type)} /> {file.original_name}
-                </td>
-                <td>{formatBytes(file.size_bytes)}</td>
-                <td>{new Date(file.deleted_at).toLocaleString()}</td>
-                <td>{daysLeft(file.deleted_at)} day(s)</td>
-                <td className="row-actions">
-                  <button onClick={() => handleRestore(file)}>
-                    <i className="fa-solid fa-clock-rotate-left" /> Restore
-                  </button>
-                  <button className="danger" onClick={() => handlePermanentDelete(file)}>
-                    <i className="fa-solid fa-trash-can" /> Delete Forever
-                  </button>
-                </td>
+        <div className="table-scroll">
+          <table className="file-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Size</th>
+                <th>Deleted</th>
+                <th>Auto-delete in</th>
+                <th><span className="sr-only">Actions</span></th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {files.map((file) => (
+                <tr key={file.id}>
+                  <td>
+                    <i className={iconClassFor(file.mime_type)} aria-hidden="true" /> {file.original_name}
+                  </td>
+                  <td>{formatBytes(file.size_bytes)}</td>
+                  <td>{new Date(file.deleted_at).toLocaleString()}</td>
+                  <td>{daysLeft(file.deleted_at)} day(s)</td>
+                  <td className="row-actions">
+                    <button onClick={() => handleRestore(file)}>
+                      <i className="fa-solid fa-clock-rotate-left" aria-hidden="true" /> Restore
+                    </button>
+                    <button className="danger" onClick={() => handlePermanentDelete(file)}>
+                      <i className="fa-solid fa-trash-can" aria-hidden="true" /> Delete Forever
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

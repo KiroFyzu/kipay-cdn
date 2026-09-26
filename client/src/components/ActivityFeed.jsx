@@ -15,7 +15,12 @@ const ACTION_LABELS = {
 
 export default function ActivityFeed({ entries, showUser = false }) {
   if (entries.length === 0) {
-    return <p className="empty-state">No activity yet.</p>;
+    return (
+      <div className="empty-state">
+        <i className="fa-solid fa-clock-rotate-left empty-state-icon" aria-hidden="true" />
+        <p>No activity yet.</p>
+      </div>
+    );
   }
 
   return (
@@ -24,7 +29,7 @@ export default function ActivityFeed({ entries, showUser = false }) {
         const meta = ACTION_LABELS[entry.action] || { label: entry.action, icon: 'fa-circle-info' };
         return (
           <li key={entry.id} className="activity-item">
-            <i className={`fa-solid ${meta.icon} activity-icon`} />
+            <i className={`fa-solid ${meta.icon} activity-icon`} aria-hidden="true" />
             <div className="activity-body">
               <span>
                 {showUser && entry.user_email && <strong>{entry.user_email}</strong>}{' '}

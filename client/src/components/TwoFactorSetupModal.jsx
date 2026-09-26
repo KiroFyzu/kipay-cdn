@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { authApi } from '../api/client';
+import { useEscapeToClose } from '../utils/useEscapeToClose';
 
 export default function TwoFactorSetupModal({ onClose, onEnabled }) {
   const [loading, setLoading] = useState(true);
@@ -7,6 +8,7 @@ export default function TwoFactorSetupModal({ onClose, onEnabled }) {
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  useEscapeToClose(onClose, !submitting);
 
   useEffect(() => {
     authApi
@@ -33,8 +35,8 @@ export default function TwoFactorSetupModal({ onClose, onEnabled }) {
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal auth-form-wide" onClick={(e) => e.stopPropagation()}>
-        <h2>Enable Two-Factor Authentication</h2>
+      <div className="modal auth-form-wide" role="dialog" aria-modal="true" aria-labelledby="totp-setup-title" onClick={(e) => e.stopPropagation()}>
+        <h2 id="totp-setup-title">Enable Two-Factor Authentication</h2>
 
         {loading && <p>Generating QR code…</p>}
 

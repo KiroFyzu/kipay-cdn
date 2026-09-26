@@ -194,7 +194,7 @@ export default function DrivePage() {
 
       <aside className="drive-panel">
         <button className="primary" onClick={() => fileInputRef.current?.click()}>
-          <i className="fa-solid fa-upload" /> Upload file(s)
+          <i className="fa-solid fa-upload" aria-hidden="true" /> Upload file(s)
         </button>
         <input
           ref={fileInputRef}
@@ -215,14 +215,21 @@ export default function DrivePage() {
           <p>
             {formatBytes(user?.storage_used_bytes || 0)} / {formatBytes(user?.storage_quota_bytes || 0)}
           </p>
-          <div className="quota-bar">
-            <div className="quota-bar-fill" style={{ width: `${usagePercent}%` }} />
+          <div
+            className="quota-bar"
+            role="progressbar"
+            aria-valuenow={usagePercent}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label="Storage used"
+          >
+            <div className={`quota-bar-fill ${usagePercent >= 90 ? 'is-full' : ''}`} style={{ width: `${usagePercent}%` }} />
           </div>
         </div>
         <h3>Folders</h3>
         {folderId && (
           <button className="link-button" onClick={() => setFolderId(null)}>
-            <i className="fa-solid fa-arrow-left" /> Back to root
+            <i className="fa-solid fa-arrow-left" aria-hidden="true" /> Back to root
           </button>
         )}
         <FolderTree

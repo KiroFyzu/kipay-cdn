@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { filesApi } from '../api/client';
+import { useEscapeToClose } from '../utils/useEscapeToClose';
 
 export default function ShareLinkModal({ file, onClose, onUpdated }) {
+  useEscapeToClose(onClose);
   const [copied, setCopied] = useState(false);
   const [expiresAt, setExpiresAt] = useState(
     file.expires_at ? new Date(file.expires_at).toISOString().slice(0, 16) : ''
@@ -36,8 +38,8 @@ export default function ShareLinkModal({ file, onClose, onUpdated }) {
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <h2>Share "{file.original_name}"</h2>
+      <div className="modal" role="dialog" aria-modal="true" aria-labelledby="share-modal-title" onClick={(e) => e.stopPropagation()}>
+        <h2 id="share-modal-title">Share "{file.original_name}"</h2>
         <p>Anyone with this link can view/download the file — no login required.</p>
         <div className="share-link-row">
           <input readOnly value={link} onFocus={(e) => e.target.select()} />

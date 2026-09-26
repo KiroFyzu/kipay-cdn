@@ -4,14 +4,14 @@ export default function FolderTree({ folders, currentFolderId, onNavigate, onRen
       {folders.map((folder) => (
         <li key={folder.id} className={folder.id === currentFolderId ? 'active' : ''}>
           <button className="link-button" onClick={() => onNavigate(folder.id)}>
-            <i className="fa-solid fa-folder" /> {folder.name}
+            <i className="fa-solid fa-folder" aria-hidden="true" /> {folder.name}
           </button>
           <span className="folder-item-actions">
-            <button className="icon-button" title="Rename folder" onClick={() => onRename(folder)}>
-              <i className="fa-solid fa-pen" />
+            <button className="icon-button" title="Rename folder" aria-label={`Rename folder ${folder.name}`} onClick={() => onRename(folder)}>
+              <i className="fa-solid fa-pen" aria-hidden="true" />
             </button>
-            <button className="icon-button" title="Delete folder" onClick={() => onDelete(folder.id)}>
-              <i className="fa-solid fa-xmark" />
+            <button className="icon-button" title="Delete folder" aria-label={`Delete folder ${folder.name}`} onClick={() => onDelete(folder.id)}>
+              <i className="fa-solid fa-xmark" aria-hidden="true" />
             </button>
           </span>
         </li>

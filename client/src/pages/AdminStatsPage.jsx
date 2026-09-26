@@ -3,10 +3,10 @@ import { adminApi } from '../api/client';
 import { formatBytes } from '../utils/fileType';
 
 const TYPE_COLORS = {
-  image: '#2d6cdf',
-  video: '#7c3aed',
-  document: '#f59e0b',
-  other: '#94a3b8',
+  image: 'var(--chart-image)',
+  video: 'var(--chart-video)',
+  document: 'var(--chart-document)',
+  other: 'var(--chart-other)',
 };
 
 const TYPE_LABELS = {
@@ -28,7 +28,17 @@ export default function AdminStatsPage() {
   }, []);
 
   if (error) return <p className="error">{error}</p>;
-  if (!stats) return <p>Loading…</p>;
+  if (!stats) {
+    return (
+      <div className="admin-page">
+        <div className="stat-tiles">
+          <div className="skeleton skeleton-tile" />
+          <div className="skeleton skeleton-tile" />
+          <div className="skeleton skeleton-tile" />
+        </div>
+      </div>
+    );
+  }
 
   const usagePercent = stats.totalStorageQuota
     ? Math.min(100, Math.round((stats.totalStorageUsed / stats.totalStorageQuota) * 100))
@@ -39,7 +49,7 @@ export default function AdminStatsPage() {
 
   return (
     <div className="admin-page">
-      <h1><i className="fa-solid fa-chart-pie" /> Storage Statistics</h1>
+      <h1><i className="fa-solid fa-chart-pie" aria-hidden="true" /> Storage Statistics</h1>
 
       <div className="stat-tiles">
         <div className="stat-tile">
