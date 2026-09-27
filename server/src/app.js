@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const swaggerUi = require('swagger-ui-express');
 const openapiSpec = require('./docs/openapi');
 
@@ -26,6 +27,23 @@ app.use('/api/folders', foldersRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/activity', activityRoutes);
 app.use('/cdn', cdnRoutes);
+
+const clientDist = path.join(__dirname, '../../client/dist');
+app.use(express.static(clientDist));
+
+app.get('*', (req, res, next) => {
+  if (
+    req.path.startsWith('/api') ||
+    req.path.startsWith('/cdn') ||
+    req.path.startsWith('/api-docs') ||
+    req.path === '/health'
+  ) {
+    return next();
+  }
+  res.sendFile(path.join(clientDist, 'index.html'), (err) => {
+    if (err) next(err);
+  });
+});
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Not found' });
