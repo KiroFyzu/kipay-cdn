@@ -74,4 +74,10 @@ export const activityApi = {
   listMine: (limit, cursor) => client.get('/api/activity', { params: { limit, cursor } }),
 };
 
+export const apiKeysApi = {
+  list: () => client.get('/api/api-keys'),
+  create: (name) => client.post('/api/api-keys', { name }),
+  remove: (id) => client.delete(`/api/api-keys/${id}`),
+};
+
 export default client;

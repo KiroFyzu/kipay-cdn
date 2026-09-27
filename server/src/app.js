@@ -10,10 +10,24 @@ const foldersRoutes = require('./routes/folders.routes');
 const adminRoutes = require('./routes/admin.routes');
 const activityRoutes = require('./routes/activity.routes');
 const cdnRoutes = require('./routes/cdn.routes');
+const apiKeysRoutes = require('./routes/apiKeys.routes');
 
 const app = express();
 
-app.use(cors());
+const allowedOrigins = [
+  'https://cdn.kipay.id',
+  'http://localhost:5173',
+];
+
+app.use(cors({
+  origin(origin, callback) {
+    // No Origin header = same-origin, curl, mobile app, server-to-server, etc.
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error('Not allowed by CORS'));
+  },
+}));
 app.use(express.json());
 
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
@@ -26,6 +40,7 @@ app.use('/api/files', filesRoutes);
 app.use('/api/folders', foldersRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/activity', activityRoutes);
+app.use('/api/api-keys', apiKeysRoutes);
 app.use('/cdn', cdnRoutes);
 
 const clientDist = path.join(__dirname, '../../client/dist');

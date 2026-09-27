@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 import TwoFactorSetupModal from '../components/TwoFactorSetupModal.jsx';
 import DisableTwoFactorModal from '../components/DisableTwoFactorModal.jsx';
 import ActivityFeed from '../components/ActivityFeed.jsx';
+import ApiKeysPanel from '../components/ApiKeysPanel.jsx';
 
 function formatBytes(bytes) {
   if (!bytes) return '0 B';
@@ -164,6 +165,8 @@ export default function SettingsPage() {
           </button>
         </form>
       </section>
+
+      <ApiKeysPanel />
 
       <section className="card">
         <h2>Recent Activity</h2>
